@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", system-ui, -apple-system, sans-serif;
+  --font-serif: "Young Serif", Georgia, serif;
+  --font-mono: "Space Mono", monospace;
+  
+  --color-brand-orange: #FF4F12;
+  --color-brand-orange-hover: #E03E05;
+  --color-bg-cream: #FAF9F6;
+  --color-text-charcoal: #333333;
+  --color-text-gray: #666666;
+  --color-border-card: #EAE9E4;
+}
+
+/* Base resets and defaults */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background-color: var(--color-bg-cream);
+    color: var(--color-text-charcoal);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+  
+  @media (hover: hover) and (pointer: fine) {
+    * {
+      cursor: none !important;
+    }
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    color: var(--color-text-charcoal);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF9F6;
+}
+::-webkit-scrollbar-thumb {
+  background: #E2DFD3;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C8C5B5;
+}
+
+/* Custom animations & interactive classes */
+.hover-float {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.hover-float:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.08);
+}
+
+.hover-tilt-left {
+  transition: transform 0.3s ease;
+}
+.hover-tilt-left:hover {
+  transform: rotate(-2deg) scale(1.02);
+}
+
+.hover-tilt-right {
+  transition: transform 0.3s ease;
+}
+.hover-tilt-right:hover {
+  transform: rotate(2deg) scale(1.02);
+}
+
+/* Fade-in animations for section switching */
+.page-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
