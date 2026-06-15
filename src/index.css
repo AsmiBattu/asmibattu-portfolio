@@ -17,13 +17,18 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100%;
   }
   
   body {
     background-color: var(--color-bg-cream);
+    background-image: radial-gradient(#D6D4CD 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
     color: var(--color-text-charcoal);
     font-family: var(--font-sans);
     overflow-x: hidden;
+    max-width: 100%;
   }
   
   @media (hover: hover) and (pointer: fine) {
@@ -55,7 +60,7 @@
 
 /* Custom animations & interactive classes */
 .hover-float {
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .hover-float:hover {
   transform: translateY(-4px);
@@ -99,5 +104,5 @@
 }
 
 .animate-text-shimmer {
-  animation: text-shimmer 3s linear infinite;
+  animation: text-shimmer 1.5s linear infinite;
 }

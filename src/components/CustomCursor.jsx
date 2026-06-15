@@ -98,8 +98,8 @@ export default function CustomCursor({ isPlayground }) {
         {/* Emoji/Text Hover States */}
         <div className={`absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-out origin-center flex items-center justify-center ${hoverType ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
           {hoverType === 'coming-soon' && (
-            <div className="bg-white/90 backdrop-blur-md border border-[#EAE9E4] px-5 py-2.5 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.05)] whitespace-nowrap">
-              <span className="font-sans text-sm font-bold animate-text-shimmer bg-[linear-gradient(110deg,#FF4F12,45%,#FFA07A,55%,#FF4F12)] bg-[length:200%_auto] bg-clip-text text-transparent">
+            <div className="flex items-center justify-center h-10 bg-white/90 backdrop-blur-md border border-[#EAE9E4] px-5 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.05)] whitespace-nowrap">
+              <span className="font-sans text-sm font-bold leading-none animate-text-shimmer bg-[linear-gradient(110deg,#FF4F12_35%,#FFE8DA_50%,#FF4F12_65%)] bg-[length:200%_auto] bg-clip-text text-transparent pb-[1px]">
                 Coming Soon
               </span>
             </div>

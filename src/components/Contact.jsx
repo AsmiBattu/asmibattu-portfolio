@@ -12,7 +12,7 @@ function Contact() {
         {/* Contact Text Column */}
         <div className="space-y-4">
           <h2 className="font-serif text-2xl md:text-3xl text-[#333333] tracking-wide">
-            Interested in learning more?
+            Interested in knowing more?
           </h2>
           <p className="font-sans text-sm md:text-base text-[#666666] leading-relaxed max-w-md">
             Shoot me an email if you'd like to chat about design, internship or full-time opportunities, side projects, or the latest app I've been obsessing over. Or connect with me through my other platforms.

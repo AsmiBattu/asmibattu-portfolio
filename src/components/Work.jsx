@@ -1,4 +1,5 @@
 import React from "react";
+import { ArrowRight } from "lucide-react";
 import unlockrBanner from "../assets/new_unlockr_banner.png";
 import labbuddyBanner from "../assets/new_labbuddy_banner.png";
 import marutiSuzukiBanner from "../assets/new_maruti_suzuki_banner.png";
@@ -12,7 +13,7 @@ function Work({ handleNavigate }) {
         <div 
           data-cursor="view" 
           onClick={() => handleNavigate && handleNavigate("casestudy", "top", "labbuddy")}
-          className="cursor-none group relative bg-white border border-[#EAE9E4] rounded-[24px] overflow-hidden flex flex-col justify-between hover-float">
+          className="cursor-none group relative bg-white/60 backdrop-blur-2xl border border-white/80 hover:bg-[#FFF6F0]/90 hover:border-[#FF4F12] shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_1px_2px_rgba(255,255,255,0.9)] rounded-[24px] overflow-hidden flex flex-col justify-between hover-float">
           <div className="w-full flex-shrink-0">
             <img
               src={labbuddyBanner}
@@ -30,18 +31,16 @@ function Work({ handleNavigate }) {
                 for a smoother user journey.
               </p>
             </div>
-            <div className="flex justify-between items-center pt-4 border-t border-[#F2F1EC]">
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); handleNavigate && handleNavigate("casestudy", "top", "labbuddy"); }}
-                className="text-[#FF4F12] font-sans font-bold text-sm hover:translate-x-1 transition-transform inline-flex items-center space-x-1"
-              >
-                <span>View Case Study</span>
-                <span>→</span>
-              </a>
-              <span className="font-mono text-xs text-[#A2A19C]">
+            <div className="flex justify-between items-center pt-4">
+              <span className="font-sans font-semibold tracking-wide text-xs text-[#666666] bg-white/50 backdrop-blur-md border border-[#EAE9E4] px-3 py-1.5 rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
                 March 2026 - Jun 2026
               </span>
+              <div className="flex items-center space-x-2 opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out">
+                <span className="text-[#FF4F12] font-sans font-bold text-sm">Case Study</span>
+                <div className="w-10 h-10 rounded-full bg-[#FF4F12] flex items-center justify-center text-white shadow-md">
+                  <ArrowRight size={20} strokeWidth={2.5} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -50,7 +49,7 @@ function Work({ handleNavigate }) {
         <div 
           data-cursor="view" 
           onClick={() => handleNavigate && handleNavigate("casestudy", "top", "msds")}
-          className="cursor-none group relative bg-white border border-[#EAE9E4] rounded-[24px] overflow-hidden flex flex-col justify-between hover-float">
+          className="cursor-none group relative bg-white/60 backdrop-blur-2xl border border-white/80 hover:bg-[#FFF6F0]/90 hover:border-[#FF4F12] shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_1px_2px_rgba(255,255,255,0.9)] rounded-[24px] overflow-hidden flex flex-col justify-between hover-float">
           <div className="w-full flex-shrink-0">
             <img
               src={marutiSuzukiBanner}
@@ -68,18 +67,16 @@ function Work({ handleNavigate }) {
                 intuitive and user-friendly journey.
               </p>
             </div>
-            <div className="flex justify-between items-center pt-4 border-t border-[#F2F1EC]">
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); handleNavigate && handleNavigate("casestudy", "top", "msds"); }}
-                className="text-[#FF4F12] font-sans font-bold text-sm hover:translate-x-1 transition-transform inline-flex items-center space-x-1"
-              >
-                <span>View Case Study</span>
-                <span>→</span>
-              </a>
-              <span className="font-mono text-xs text-[#A2A19C]">
+            <div className="flex justify-between items-center pt-4">
+              <span className="font-sans font-semibold tracking-wide text-xs text-[#666666] bg-white/50 backdrop-blur-md border border-[#EAE9E4] px-3 py-1.5 rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
                 July 2025 - August 2025
               </span>
+              <div className="flex items-center space-x-2 opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out">
+                <span className="text-[#FF4F12] font-sans font-bold text-sm">Case Study</span>
+                <div className="w-10 h-10 rounded-full bg-[#FF4F12] flex items-center justify-center text-white shadow-md">
+                  <ArrowRight size={20} strokeWidth={2.5} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -87,7 +84,7 @@ function Work({ handleNavigate }) {
         {/* Project 3: Unlockr */}
         <div 
           data-cursor="coming-soon" 
-          className="cursor-none group relative bg-white border border-[#EAE9E4] rounded-[24px] overflow-hidden flex flex-col justify-between hover-float opacity-80">
+          className="cursor-none group relative bg-white/60 backdrop-blur-2xl border border-white/80 hover:bg-[#FFF6F0]/90 hover:border-[#FF4F12] shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_1px_2px_rgba(255,255,255,0.9)] rounded-[24px] overflow-hidden flex flex-col justify-between hover-float">
           <div className="w-full flex-shrink-0">
             <img
               src={unlockrBanner}
@@ -105,13 +102,13 @@ function Work({ handleNavigate }) {
                 for a smoother user journey.
               </p>
             </div>
-            <div className="flex justify-between items-center pt-4 border-t border-[#F2F1EC]">
-              <span className="text-[#FF4F12] font-sans font-bold text-sm inline-flex items-center space-x-1">
-                <span>Coming Soon</span>
-              </span>
-              <span className="font-mono text-xs text-[#A2A19C]">
+            <div className="flex justify-between items-center pt-4">
+              <span className="font-sans font-semibold tracking-wide text-xs text-[#666666] bg-white/50 backdrop-blur-md border border-[#EAE9E4] px-3 py-1.5 rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
                 April 2026 - June 2026
               </span>
+              <div className="flex items-center space-x-2 opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out">
+                <span className="text-[#FF4F12] font-sans font-bold text-sm">Coming Soon</span>
+              </div>
             </div>
           </div>
         </div>
@@ -120,7 +117,7 @@ function Work({ handleNavigate }) {
         <div 
           data-cursor="view" 
           onClick={() => handleNavigate && handleNavigate("casestudy", "top", "skillcraft")}
-          className="cursor-none group relative bg-white border border-[#EAE9E4] rounded-[24px] overflow-hidden flex flex-col justify-between hover-float">
+          className="cursor-none group relative bg-white/60 backdrop-blur-2xl border border-white/80 hover:bg-[#FFF6F0]/90 hover:border-[#FF4F12] shadow-[0_8px_32px_rgba(0,0,0,0.04),inset_0_1px_2px_rgba(255,255,255,0.9)] rounded-[24px] overflow-hidden flex flex-col justify-between hover-float">
           <div className="w-full flex-shrink-0">
             <img
               src={skillcraftBanner}
@@ -138,18 +135,16 @@ function Work({ handleNavigate }) {
                 e-commerce, news, and government service platforms.
               </p>
             </div>
-            <div className="flex justify-between items-center pt-4 border-t border-[#F2F1EC]">
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); handleNavigate && handleNavigate("casestudy", "top", "skillcraft"); }}
-                className="text-[#FF4F12] font-sans font-bold text-sm hover:translate-x-1 transition-transform inline-flex items-center space-x-1"
-              >
-                <span>View Case Study</span>
-                <span>→</span>
-              </a>
-              <span className="font-mono text-xs text-[#A2A19C]">
+            <div className="flex justify-between items-center pt-4">
+              <span className="font-sans font-semibold tracking-wide text-xs text-[#666666] bg-white/50 backdrop-blur-md border border-[#EAE9E4] px-3 py-1.5 rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
                 January 2025
               </span>
+              <div className="flex items-center space-x-2 opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out">
+                <span className="text-[#FF4F12] font-sans font-bold text-sm">Case Study</span>
+                <div className="w-10 h-10 rounded-full bg-[#FF4F12] flex items-center justify-center text-white shadow-md">
+                  <ArrowRight size={20} strokeWidth={2.5} />
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { ArrowLeft } from "lucide-react";
 
 // You can add more images to each array as you upload them!
 // Note: If you upload images with different names or extensions (e.g., .jpg), update them here.
@@ -28,7 +29,7 @@ const CASE_STUDY_DATA = {
   ]
 };
 
-function CaseStudy({ caseStudyId }) {
+function CaseStudy({ caseStudyId, handleNavigate }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [caseStudyId]);
@@ -37,15 +38,18 @@ function CaseStudy({ caseStudyId }) {
   const currentImages = CASE_STUDY_DATA[caseStudyId] || CASE_STUDY_DATA.msds;
 
   return (
-    <div className="flex flex-col items-center w-full bg-[#FAF9F6] pb-12 px-6 md:px-12">
-      <div className="w-full max-w-5xl flex flex-col items-center shadow-[0_0_40px_rgba(0,0,0,0.03)]">
+    <div className="flex flex-col items-center w-full pb-12 px-6 md:px-12 relative">
+      <div className="w-full max-w-5xl flex flex-col items-center shadow-[0_0_40px_rgba(0,0,0,0.03)] pt-4">
         {currentImages.map((src, index) => (
           <img
-            key={index}
+            key={src}
             src={src}
             alt={`${caseStudyId || 'Case Study'} Part ${index + 1}`}
             className="w-full h-auto block"
             style={{ imageRendering: 'high-quality' }}
+            onLoad={(e) => {
+              e.target.style.display = 'block';
+            }}
             onError={(e) => {
               // Hide broken images gracefully if you haven't uploaded them yet
               e.target.style.display = 'none';

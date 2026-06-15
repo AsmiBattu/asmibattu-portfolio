@@ -241,10 +241,7 @@ function Playground() {
             x,
             y,
             width: `${CANVAS_SIZE}px`,
-            height: `${CANVAS_SIZE}px`,
-            backgroundImage: 'radial-gradient(#E0E0E0 1.5px, transparent 1.5px)',
-            backgroundSize: '24px 24px',
-            backgroundPosition: 'center'
+            height: `${CANVAS_SIZE}px`
           }}
         >
           {items.map(item => (

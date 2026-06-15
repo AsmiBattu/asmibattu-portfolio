@@ -53,6 +53,8 @@ function App() {
       setActiveTab(tab);
       if (caseStudyId) {
         setActiveCaseStudyId(caseStudyId);
+      } else {
+        setActiveCaseStudyId(null);
       }
       
       // Let the new content render, then fade out transition
@@ -92,14 +94,15 @@ function App() {
   const hideFooter = isPlayground;
 
   return (
-    <div className={`min-h-screen flex flex-col mx-auto relative bg-[#FAF9F6] ${
-      isPlayground 
-        ? "w-full h-[100dvh] overflow-hidden px-6 md:px-12 py-6" 
-        : "max-w-[1200px] w-full px-6 md:px-12 py-6"
-    }`}>
-      <CustomCursor isPlayground={isPlayground} />
+    <div className="overflow-x-hidden w-full min-h-screen">
+      <div className={`min-h-screen flex flex-col mx-auto relative ${
+        isPlayground 
+          ? "w-full h-[100dvh] overflow-hidden px-6 md:px-12 py-6" 
+          : "max-w-[1200px] w-full px-6 md:px-12 py-6"
+      }`}>
+        <CustomCursor isPlayground={isPlayground} />
       <TransitionLayer isTransitioning={isTransitioning} />
-      <Navbar handleNavigate={handleNavigate} />
+      <Navbar handleNavigate={handleNavigate} activeTab={activeTab} activeCaseStudyId={activeCaseStudyId} />
 
       {/* Main Content Area */}
       <main className={`flex-grow page-fade-in ${isPlayground ? "relative overflow-hidden" : ""}`} key={activeTab}>
@@ -114,10 +117,11 @@ function App() {
 
         {activeTab === "playground" && <Playground />}
 
-        {activeTab === "casestudy" && <CaseStudy caseStudyId={activeCaseStudyId} />}
+        {activeTab === "casestudy" && <CaseStudy caseStudyId={activeCaseStudyId} handleNavigate={handleNavigate} />}
       </main>
 
       {!hideFooter && <Contact />}
+      </div>
     </div>
   );
 }
