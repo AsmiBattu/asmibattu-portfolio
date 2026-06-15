@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-export default function CustomCursor() {
+export default function CustomCursor({ isPlayground }) {
   const cursorRef = useRef(null);
   const [hoverType, setHoverType] = useState(null);
 
@@ -26,8 +26,8 @@ export default function CustomCursor() {
       const dx = mouseX - cursorX;
       const dy = mouseY - cursorY;
       
-      cursorX += dx * 0.2;
-      cursorY += dy * 0.2;
+      cursorX = mouseX;
+      cursorY = mouseY;
       
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
@@ -70,19 +70,38 @@ export default function CustomCursor() {
         transform: `translate3d(-100px, -100px, 0)`
       }}
     >
-      <div className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none flex items-center justify-center">
-        {/* Default Orange Dot */}
-        <div 
-          className={`absolute transition-all duration-300 ease-out origin-center bg-[#FF4F12] rounded-full shadow-sm ${
-            !hoverType ? 'w-3 h-3 scale-100 opacity-100' : 'w-3 h-3 scale-0 opacity-0'
-          }`} 
-        />
-        
+      <div className="absolute pointer-events-none">
+        {/* Default Cursor (Figma Arrow on Playground, Orange Dot elsewhere) */}
+        {isPlayground ? (
+          <div 
+            className={`absolute top-0 left-0 transition-all duration-200 ease-out origin-top-left flex flex-col items-start ${
+              !hoverType ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
+            }`} 
+          >
+            {/* Arrow */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-sm z-50" style={{ transform: 'translate(-2px, -2px)' }}>
+              <path d="M2 2L20 10.5L12.5 13.5L9.5 22L2 2Z" fill="#FF4F12" stroke="white" strokeWidth="2" strokeLinejoin="round"/>
+            </svg>
+            {/* Name Tag */}
+            <div className="bg-[#FF4F12] text-white font-sans text-[10px] font-bold px-1.5 py-[2px] rounded-sm rounded-tl-none whitespace-nowrap shadow-sm ml-3.5 -mt-1 z-40 relative tracking-wide">
+              Visitor
+            </div>
+          </div>
+        ) : (
+          <div 
+            className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-out origin-center bg-[#FF4F12] rounded-full shadow-sm ${
+              !hoverType ? 'w-3 h-3 scale-100 opacity-100' : 'w-3 h-3 scale-0 opacity-0'
+            }`} 
+          />
+        )}
+
         {/* Emoji/Text Hover States */}
-        <div className={`transition-all duration-300 ease-out origin-center ${hoverType ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
+        <div className={`absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-out origin-center flex items-center justify-center ${hoverType ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
           {hoverType === 'coming-soon' && (
-            <div className="bg-black/80 backdrop-blur-sm text-[#FAF9F6] px-5 py-2.5 rounded-full font-sans text-sm font-medium shadow-xl whitespace-nowrap">
-              Coming Soon
+            <div className="bg-white/90 backdrop-blur-md border border-[#EAE9E4] px-5 py-2.5 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.05)] whitespace-nowrap">
+              <span className="font-sans text-sm font-bold animate-text-shimmer bg-[linear-gradient(110deg,#FF4F12,45%,#FFA07A,55%,#FF4F12)] bg-[length:200%_auto] bg-clip-text text-transparent">
+                Coming Soon
+              </span>
             </div>
           )}
           {hoverType === 'view' && (

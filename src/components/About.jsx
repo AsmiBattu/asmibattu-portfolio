@@ -1,8 +1,8 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
-import newPortrait from "../assets/new_portrait.jpg";
-import newTravel from "../assets/new_travel.jpg";
-import newWatercolor from "../assets/new_watercolor.jpg";
+import newPortrait from "../assets/about_me.png";
+import newTravel from "../assets/about_monument.jpeg";
+import newWatercolor from "../assets/about_painting.jpeg";
 
 function About() {
   return (
@@ -46,7 +46,7 @@ function About() {
           {/* Resume Button */}
           <div className="pt-4">
             <a
-              href="/assets/resume.pdf"
+              href="/assets/_Asmi%20Battu_Resume%20Updated.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 bg-[#FF4F12] text-white px-5 py-2 rounded-full font-serif text-lg hover:scale-105 hover:shadow-md transition-all duration-300 w-max"

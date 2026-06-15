@@ -15,9 +15,7 @@ function Contact() {
             Interested in learning more?
           </h2>
           <p className="font-sans text-sm md:text-base text-[#666666] leading-relaxed max-w-md">
-            Shoot me an email if you'd like to chat about design, internships,
-            side projects, or the latest app I've been obsessing over. Or
-            connect with me on through my other platforms.
+            Shoot me an email if you'd like to chat about design, internship or full-time opportunities, side projects, or the latest app I've been obsessing over. Or connect with me through my other platforms.
           </p>
         </div>
 
@@ -30,7 +28,7 @@ function Contact() {
             <div className="flex space-x-4">
               {/* LinkedIn Link */}
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/asmibattu/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 rounded-xl bg-[#0077B5] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
@@ -47,7 +45,9 @@ function Contact() {
 
               {/* Email Link */}
               <a
-                href="mailto:asmi.battu@gmail.com"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=asmitech25@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-12 h-12 rounded-xl bg-[#E64B3B] flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                 aria-label="Send Email"
               >
@@ -62,7 +62,7 @@ function Contact() {
 
               {/* Instagram Link */}
               <a
-                href="https://instagram.com"
+                href="https://instagram.com/asmidesigns"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#FFB900] via-[#E10077] to-[#4F5BD5] flex items-center justify-center transition-all hover:scale-110 shadow-sm"

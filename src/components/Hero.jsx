@@ -13,7 +13,7 @@ function Hero() {
         animate={{ y: 0, opacity: 1, rotate: -3 }}
         transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.15 }}
         whileHover={{ scale: 1.05, rotate: -1 }}
-        className="absolute top-[-20px] left-8 md:left-16 lg:left-32 md:top-4 bg-[#FFDBCE] px-6 py-2 md:px-8 md:py-3 shadow-md z-30 cursor-default"
+        className="absolute top-[-20px] left-4 md:left-16 lg:left-32 md:top-4 bg-[#FFDBCE] px-6 py-2 md:px-8 md:py-3 shadow-md z-30 cursor-default scale-75 md:scale-100 origin-top-left"
       >
         <h1 className="font-serif text-5xl md:text-[64px] font-normal text-[#FF4F12] tracking-wide leading-none">
           Asmi Battu
@@ -26,7 +26,7 @@ function Hero() {
         animate={{ y: 0, opacity: 1, rotate: 10 }}
         transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.1 }}
         whileHover={{ rotate: 15, scale: 1.05 }}
-        className="absolute top-16 right-4 md:right-24 md:top-24 w-[120px] h-[75px] bg-[#AED635] shadow-md flex items-center justify-center text-[#FAF9F6] text-3xl font-medium z-20 cursor-pointer"
+        className="absolute top-16 right-0 md:right-24 md:top-24 w-[120px] h-[75px] bg-[#AED635] shadow-md flex items-center justify-center text-[#FAF9F6] text-3xl font-medium z-20 cursor-pointer scale-75 md:scale-100 origin-top-right"
         style={{ fontFamily: '"Comic Sans MS", "Chalkboard SE", "Marker Felt", sans-serif' }}
       >
         अस्मि
@@ -41,7 +41,7 @@ function Hero() {
         animate={{ y: 0, opacity: 1, rotate: -8 }}
         transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.2 }}
         whileHover={{ rotate: -5, scale: 1.05 }}
-        className="absolute -bottom-8 left-2 md:left-[18%] w-28 h-28 md:w-36 md:h-36 bg-[#A1D7FF] p-3 shadow-md flex flex-col justify-between z-20 cursor-pointer"
+        className="absolute -bottom-8 left-0 md:left-[18%] w-28 h-28 md:w-36 md:h-36 bg-[#A1D7FF] p-3 shadow-md flex flex-col justify-between z-20 cursor-pointer scale-75 md:scale-100 origin-bottom-left"
       >
         <img
           src={doodleImage}
@@ -57,7 +57,7 @@ function Hero() {
         animate={{ y: 0, opacity: 1, rotate: 0 }}
         transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0 }}
         whileHover={{ rotate: 2 }}
-        className="relative w-full max-w-[620px] z-10 drop-shadow-xl"
+        className="relative w-full max-w-[620px] z-10 drop-shadow-xl px-2 md:px-0"
       >
         <img 
           src={heroOrangeNote} 
@@ -73,7 +73,7 @@ function Hero() {
         animate={{ y: 0, opacity: 1, rotate: 4 }}
         transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.3 }}
         whileHover={{ rotate: 2 }}
-        className="relative md:absolute md:bottom-2 md:right-16 w-full max-w-[420px] mt-6 md:mt-0 bg-[#FFDBCE] text-[#FF4F12] p-5 md:p-6 drop-shadow-lg z-20 cursor-pointer"
+        className="relative md:absolute md:bottom-2 md:right-16 w-[92%] md:w-full md:max-w-[420px] mt-6 md:mt-0 bg-[#FFDBCE] text-[#FF4F12] p-5 md:p-6 drop-shadow-lg z-20 cursor-pointer scale-95 md:scale-100 origin-top"
         style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 32px), calc(100% - 32px) 100%, 0 100%)" }}
       >
         <p className="font-mono text-xs md:text-sm leading-relaxed tracking-tight">

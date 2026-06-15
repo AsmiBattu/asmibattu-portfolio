@@ -10,8 +10,14 @@ import TransitionLayer from "./components/TransitionLayer";
 import CaseStudy from "./components/CaseStudy";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("work");
-  const [activeCaseStudyId, setActiveCaseStudyId] = useState(null);
+  const [activeTab, setActiveTab] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("page") || "work";
+  });
+  const [activeCaseStudyId, setActiveCaseStudyId] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("id") || null;
+  });
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleNavigate = (tab, scrollToId = null, caseStudyId = null) => {
@@ -20,7 +26,7 @@ function App() {
       return;
     }
     
-    if (tab === activeTab) {
+    if (tab === activeTab && caseStudyId === activeCaseStudyId) {
       if (scrollToId === "top") {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else if (scrollToId) {
@@ -31,6 +37,15 @@ function App() {
       return;
     }
     
+    const url = new URL(window.location);
+    url.searchParams.set("page", tab);
+    if (caseStudyId) {
+      url.searchParams.set("id", caseStudyId);
+    } else {
+      url.searchParams.delete("id");
+    }
+    window.history.pushState({}, "", url);
+
     setIsTransitioning(true);
     
     // Wait for animation to cover screen
@@ -56,6 +71,17 @@ function App() {
     }, 600);
   };
 
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      setActiveTab(params.get("page") || "work");
+      setActiveCaseStudyId(params.get("id") || null);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   // Scroll to top when active tab changes
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,10 +94,10 @@ function App() {
   return (
     <div className={`min-h-screen flex flex-col mx-auto relative bg-[#FAF9F6] ${
       isPlayground 
-        ? "w-full h-screen overflow-hidden px-6 md:px-12 py-6" 
-        : "max-w-[1200px] px-6 md:px-12 py-6 border-x border-[#EAE9E4] shadow-[0_0_32px_rgba(0,0,0,0.02)]"
+        ? "w-full h-[100dvh] overflow-hidden px-6 md:px-12 py-6" 
+        : "max-w-[1200px] w-full px-6 md:px-12 py-6"
     }`}>
-      <CustomCursor />
+      <CustomCursor isPlayground={isPlayground} />
       <TransitionLayer isTransitioning={isTransitioning} />
       <Navbar handleNavigate={handleNavigate} />
 

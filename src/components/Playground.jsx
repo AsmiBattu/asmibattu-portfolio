@@ -1,68 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import asmiPortrait from "../assets/asmi_portrait.png";
-import archwayDome from "../assets/archway_dome.png";
-import watercolorStorefront from "../assets/watercolor_storefront.png";
-
-// 1. Figma Tab Hoarder Component
-function TabHoarderWidget() {
-  const [tabs, setTabs] = useState(["Workspace", "Styleguide", "Wireframes"]);
-
-  const addTab = () => {
-    if (tabs.length < 24) {
-      setTabs([...tabs, `New Frame ${tabs.length + 1}`]);
-    }
-  };
-
-  const removeTab = (index, e) => {
-    e.stopPropagation();
-    setTabs(tabs.filter((_, i) => i !== index));
-  };
-
-  const resetTabs = () => {
-    setTabs(["Workspace", "Styleguide", "Wireframes"]);
-  };
-
-  return (
-    <div className="w-full bg-[#1E1E1E] rounded-lg p-2.5 flex flex-col justify-between h-[160px] border border-[#2c2c2c] overflow-hidden select-none">
-      <div className="flex bg-[#2C2C2C] p-1.5 rounded-md overflow-x-hidden space-x-1 items-center h-[42px]">
-        {tabs.map((tab, idx) => (
-          <div
-            key={idx}
-            style={{ maxWidth: `${Math.max(100 - tabs.length * 3, 28)}px` }}
-            className={`flex items-center justify-between bg-[#1E1E1E] text-white px-2 py-1 text-[10px] rounded h-7 truncate border-t border-[#333333] transition-all`}
-          >
-            <span className="truncate">{tab}</span>
-            <button
-              onClick={(e) => removeTab(idx, e)}
-              className="ml-1 opacity-40 hover:opacity-100 font-bold"
-            >
-              ×
-            </button>
-          </div>
-        ))}
-        <button
-          onClick={addTab}
-          className="text-white hover:bg-[#3E3E3E] rounded px-2 h-7 font-bold text-sm flex items-center justify-center transition-colors cursor-pointer"
-        >
-          +
-        </button>
-      </div>
-
-      <div className="flex justify-between items-center pt-2">
-        <span className="font-mono text-xs text-[#A2A19C]">
-          Tabs: {tabs.length} {tabs.length >= 12 ? "🤯" : ""}
-        </span>
-        <button
-          onClick={resetTabs}
-          className="font-mono text-xs text-[#FF4F12] border border-[#FF4F12] hover:bg-[#FF4F12] hover:text-white transition-all px-3 py-1 rounded cursor-pointer"
-        >
-          Reset
-        </button>
-      </div>
-    </div>
-  );
-}
+import { motion, AnimatePresence, useMotionValue } from "framer-motion";
+import img1 from "../assets/new_watercolor.jpg";
+import img2 from "../assets/new_travel.jpg";
+import img3 from "../assets/new_portrait.jpg";
+import img4 from "../assets/plant_doodle.jpg";
+import img5 from "../assets/art5.jpg";
 
 // 2. Watercolor Doodle Component
 function WatercolorDoodleWidget() {
@@ -79,30 +21,65 @@ function WatercolorDoodleWidget() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }, []);
 
+  const lastPosRef = useRef(null);
+
   const handleDraw = (e) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     const rect = canvas.getBoundingClientRect();
     
+    if (e.touches && e.touches.length === 0) return;
+
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
     
     const x = clientX - rect.left;
     const y = clientY - rect.top;
 
-    if (e.buttons !== 1 && !e.touches) return;
+    if (e.type === "mousedown" || e.type === "touchstart") {
+      lastPosRef.current = { x, y };
+    }
 
-    ctx.beginPath();
-    const radius = Math.random() * 16 + 10;
-    const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-    grad.addColorStop(0, hexToRgba(color, 0.15));
-    grad.addColorStop(0.8, hexToRgba(color, 0.04));
-    grad.addColorStop(1, "rgba(255,255,255,0)");
+    if (e.buttons !== 1 && !e.touches) {
+      lastPosRef.current = null;
+      return;
+    }
 
-    ctx.fillStyle = grad;
-    ctx.arc(x, y, radius, 0, Math.PI * 2);
-    ctx.fill();
+    if (!lastPosRef.current) {
+      lastPosRef.current = { x, y };
+    }
+
+    const lastX = lastPosRef.current.x;
+    const lastY = lastPosRef.current.y;
+    
+    const dx = x - lastX;
+    const dy = y - lastY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    const steps = Math.max(1, Math.floor(distance / 2));
+
+    for (let i = 0; i <= steps; i++) {
+      const interpX = lastX + (dx * i) / steps;
+      const interpY = lastY + (dy * i) / steps;
+
+      ctx.beginPath();
+      const radius = Math.random() * 10 + 12;
+      const grad = ctx.createRadialGradient(interpX, interpY, 0, interpX, interpY, radius);
+      grad.addColorStop(0, hexToRgba(color, 0.15));
+      grad.addColorStop(0.8, hexToRgba(color, 0.04));
+      grad.addColorStop(1, "rgba(255,255,255,0)");
+
+      ctx.fillStyle = grad;
+      ctx.arc(interpX, interpY, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    lastPosRef.current = { x, y };
+  };
+
+  const handleStop = () => {
+    lastPosRef.current = null;
   };
 
   const hexToRgba = (hex, alpha) => {
@@ -145,13 +122,17 @@ function WatercolorDoodleWidget() {
 
       <canvas
         ref={canvasRef}
-        width={400}
-        height={140}
+        width={800}
+        height={400}
         onMouseMove={handleDraw}
         onMouseDown={handleDraw}
         onTouchMove={handleDraw}
         onTouchStart={handleDraw}
-        className="w-full h-[140px] border border-[#EAE9E4] rounded-lg cursor-crosshair bg-[#FAF9F6]"
+        onMouseUp={handleStop}
+        onMouseLeave={handleStop}
+        onTouchEnd={handleStop}
+        onTouchCancel={handleStop}
+        className="w-full h-[400px] border border-[#EAE9E4] rounded-lg cursor-crosshair bg-[#FAF9F6]"
       />
     </div>
   );
@@ -161,182 +142,108 @@ function WatercolorDoodleWidget() {
 const CANVAS_SIZE = 4000;
 const CENTER = CANVAS_SIZE / 2; // 2000
 
-const items = [
-  // --- CENTER (Welcome) ---
-  {
-    id: 'intro',
-    type: 'note',
-    content: "Welcome to my messy workspace!\nDrag around to explore.\n\n✨",
-    x: CENTER - 150,
-    y: CENTER - 100,
-    rotate: -3,
-    color: '#FFDBCE',
-    w: 300,
-  },
-  {
-    id: 'note-center',
-    type: 'note',
-    content: "Scroll to zoom? Nah, just drag.",
-    x: CENTER + 200,
-    y: CENTER + 150,
-    rotate: 8,
-    color: '#FFF',
-    w: 220,
-  },
-
-  // --- CLUSTER 1: UI Experiments (Top-Left) ---
-  {
-    id: 'ui-title',
-    type: 'text',
-    content: "EXPLORATIONS 01\nUI Interactions",
-    x: 800,
-    y: 800,
-    rotate: -2,
-    w: 400,
-  },
-  {
-    id: 'hoarder',
-    type: 'widget',
-    title: 'Figma Tab Hoarder',
-    description: 'Experiment 01',
-    x: 900,
-    y: 950,
-    rotate: 1,
-    w: 480, // Massive
-    component: <TabHoarderWidget />
-  },
-  {
-    id: 'ui-note-1',
-    type: 'note',
-    content: "To-do:\n- Try a new font pairing\n- Fix that one pixel",
-    x: 1420,
-    y: 880,
-    rotate: 6,
-    color: '#AED635',
-    textColor: '#FAF9F6',
-    w: 200,
-  },
-  {
-    id: 'ui-note-2',
-    type: 'note',
-    content: "What if the nav was just... massive?",
-    x: 750,
-    y: 1250,
-    rotate: -4,
-    color: '#FFEBE1',
-    w: 220,
-  },
-
-  // --- CLUSTER 2: Photography (Bottom-Left) ---
-  {
-    id: 'photo-title',
-    type: 'text',
-    content: "INSPIRATION\nTravel & Spaces",
-    x: 600,
-    y: 2200,
-    rotate: 1,
-    w: 400,
-  },
-  {
-    id: 'pol-3',
-    type: 'image',
-    title: 'Taj Mahal Dome',
-    src: archwayDome,
-    x: 750,
-    y: 2350,
-    rotate: -5,
-    w: 380, // Large polaroid
-  },
-  {
-    id: 'pol-1',
-    type: 'image',
-    title: 'Asmi Portrait',
-    src: asmiPortrait,
-    x: 1200,
-    y: 2650,
-    rotate: 4,
-    w: 320,
-  },
-  {
-    id: 'photo-note',
-    type: 'note',
-    content: "Color palette here is unreal. Extract the blues.",
-    x: 550,
-    y: 2800,
-    rotate: -9,
-    color: '#A1D7FF',
-    w: 240,
-  },
-
-  // --- CLUSTER 3: Art & Doodles (Right Side) ---
-  {
-    id: 'art-title',
-    type: 'text',
-    content: "CANVAS\nMessy thoughts",
-    x: 2600,
-    y: 1300,
-    rotate: -3,
-    w: 400,
-  },
-  {
-    id: 'watercolor',
-    type: 'widget',
-    title: 'Digital Watercolor',
-    description: 'Experiment 02',
-    x: 2750,
-    y: 1450,
-    rotate: 2,
-    w: 550, // Massive
-    component: <WatercolorDoodleWidget />
-  },
-  {
-    id: 'pol-2',
-    type: 'image',
-    title: 'Casa Ivona Store',
-    src: watercolorStorefront,
-    x: 2600,
-    y: 1950,
-    rotate: -6,
-    w: 440,
-  },
-  {
-    id: 'art-note',
-    type: 'note',
-    content: "Storefront in Split, Croatia. The green door was perfect.",
-    x: 3100,
-    y: 2250,
-    rotate: 5,
-    color: '#FFF',
-    w: 260,
-  }
+const artImages = [
+  { id: 'art-1', src: img1, title: 'Artboard 1', w: 320 },
+  { id: 'art-2', src: img2, title: 'Artboard 2', w: 380 },
+  { id: 'art-3', src: img3, title: 'Artboard 3', w: 300 },
+  { id: 'art-4', src: img4, title: 'Artboard 4', w: 260 },
+  { id: 'art-5', src: img5, title: 'Artboard 5', w: 340 },
 ];
 
 function Playground() {
   const constraintsRef = useRef(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  // Use a fixed initial value that feels centered on average screens to avoid SSR issues
+  // Frame the initial view towards the top-left where the main canvas sits
   const initialX = -CENTER + 600;
   const initialY = -CENTER + 400;
+
+  const scale = useMotionValue(0.7);
+  const x = useMotionValue(initialX);
+  const y = useMotionValue(initialY);
+
+  const [items] = useState(() => {
+    // Hardcode specific non-overlapping coordinates to guarantee no overlap with each other or the Watercolor Canvas
+    const fixedPositions = [
+      { x: CENTER + 300, y: CENTER - 400 }, // Top Right
+      { x: CENTER - 600, y: CENTER + 200 }, // Bottom Left
+      { x: CENTER - 150, y: CENTER + 200 }, // Bottom Center
+      { x: CENTER + 250, y: CENTER + 200 }, // Bottom Right
+      { x: CENTER + 650, y: CENTER - 200 }, // Far Right
+    ];
+
+    const generatedArts = artImages.map((art, idx) => {
+      return {
+        id: art.id,
+        type: 'image',
+        title: art.title,
+        src: art.src,
+        x: fixedPositions[idx].x,
+        y: fixedPositions[idx].y,
+        rotate: 0, // Straight, no angle
+        w: art.w,
+      };
+    });
+
+    return [
+      {
+        id: 'watercolor',
+        type: 'widget',
+        title: 'Watercolor Canvas',
+        description: 'Draw something!',
+        x: CENTER - 600,
+        y: CENTER - 400,
+        rotate: 0,
+        w: 800,
+        component: <WatercolorDoodleWidget />
+      },
+      ...generatedArts
+    ];
+  });
+
+  useEffect(() => {
+    const el = constraintsRef.current;
+    if (!el) return;
+    
+    const handleWheel = (e) => {
+      e.preventDefault();
+      if (e.ctrlKey) {
+        // Pinch-to-zoom
+        const zoomSpeed = 0.01;
+        const currentScale = scale.get();
+        const newScale = Math.min(Math.max(currentScale - (e.deltaY * zoomSpeed), 0.2), 3.0);
+        scale.set(newScale);
+      } else {
+        // Normal pan
+        x.set(x.get() - e.deltaX);
+        y.set(y.get() - e.deltaY);
+      }
+    };
+
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, [x, y]);
 
   return (
     <>
       <div 
         ref={constraintsRef} 
-        className="absolute -left-6 md:-left-12 -right-6 md:-right-12 -bottom-6 top-0 overflow-hidden bg-[#FAF9F6] border-t border-[#EAE9E4]"
+        className="absolute -left-6 md:-left-12 -right-6 md:-right-12 -bottom-6 top-0 overflow-hidden bg-[#F5F5F5] border-t border-[#EAE9E4]"
       >
         <motion.div
           drag
           dragConstraints={constraintsRef}
           dragElastic={0.1}
           dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
-          initial={{ x: initialX, y: initialY }}
           className="absolute cursor-grab active:cursor-grabbing"
           style={{
+            scale,
+            x,
+            y,
             width: `${CANVAS_SIZE}px`,
             height: `${CANVAS_SIZE}px`,
-            backgroundImage: 'radial-gradient(#d1d1cf 1.5px, transparent 1.5px)',
-            backgroundSize: '32px 32px',
+            backgroundImage: 'radial-gradient(#E0E0E0 1.5px, transparent 1.5px)',
+            backgroundSize: '24px 24px',
             backgroundPosition: 'center'
           }}
         >
@@ -344,6 +251,130 @@ function Playground() {
             <PlaygroundItem key={item.id} item={item} onClick={() => setSelectedItem(item)} />
           ))}
         </motion.div>
+      </div>
+
+      {/* Playful Figma-style UI Overlays (Dark Mode) */}
+      <div className="absolute inset-0 pointer-events-none z-30 hidden md:block overflow-hidden">
+        
+        {/* Left Panel: Layers */}
+        <div className="absolute left-0 top-0 bottom-0 w-48 bg-[#1E1E1E] border-r border-[#333] flex flex-col pointer-events-auto text-sm text-[#D4D4D4] shadow-2xl">
+          <div className="px-4 py-3 border-b border-[#333] flex items-center justify-between cursor-pointer hover:bg-[#2C2C2C] transition-colors">
+            <div className="font-sans font-medium flex items-center gap-2"><span className="text-xl">🎨</span> asmi-portfolio</div>
+            <span className="opacity-50 text-[10px]">▼</span>
+          </div>
+          
+          <div className="p-4 flex-1 overflow-y-auto">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#888] mb-3 flex justify-between items-center">
+              Pages <span className="text-lg leading-none cursor-pointer hover:text-white">+</span>
+            </div>
+            <div className="flex flex-col gap-1 mb-6">
+              <div className="px-2 py-1.5 bg-[#333] rounded text-white flex items-center gap-2 cursor-pointer">
+                <span className="text-sm">📄</span> Playground
+              </div>
+              <div className="px-2 py-1.5 hover:bg-[#2C2C2C] rounded text-[#A0A0A0] flex items-center gap-2 cursor-pointer transition-colors">
+                <span className="text-sm">🏠</span> Home
+              </div>
+            </div>
+            
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#888] mb-3">
+              Layers
+            </div>
+            <div className="flex flex-col gap-1">
+              {items.map(item => (
+                <button 
+                  key={item.id} 
+                  onClick={() => setSelectedItem(item)}
+                  className="text-left px-2 py-1.5 rounded hover:bg-[#2C2C2C] hover:text-white transition-colors font-mono text-xs truncate flex items-center gap-2 cursor-pointer"
+                >
+                  <span className="opacity-70 text-sm">{item.type === 'widget' ? '⚙️' : '🖼️'}</span>
+                  {item.title}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Panel: Design */}
+        <div className="absolute right-0 top-0 bottom-0 w-56 bg-[#1E1E1E] border-l border-[#333] flex flex-col pointer-events-auto text-sm text-[#D4D4D4] shadow-2xl">
+          <div className="flex border-b border-[#333]">
+            <div className="flex-1 text-center py-3 border-b-2 border-[#FF4F12] text-white font-medium cursor-pointer">Design</div>
+            <div className="flex-1 text-center py-3 text-[#888] hover:text-[#D4D4D4] cursor-pointer transition-colors">Prototype</div>
+          </div>
+          
+          <div className="p-4 space-y-6 overflow-y-auto">
+            <div>
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-xs font-bold text-white">Appearance</span>
+                <span className="opacity-50 text-xs">👁️</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                <div className="bg-[#2C2C2C] p-2 rounded border border-[#444] flex items-center gap-2"><span className="opacity-50 text-[10px]">W</span> 4000</div>
+                <div className="bg-[#2C2C2C] p-2 rounded border border-[#444] flex items-center gap-2"><span className="opacity-50 text-[10px]">H</span> 4000</div>
+                <div className="bg-[#2C2C2C] p-2 rounded border border-[#444] flex items-center gap-2"><span className="opacity-50 text-[10px]">X</span> 0</div>
+                <div className="bg-[#2C2C2C] p-2 rounded border border-[#444] flex items-center gap-2"><span className="opacity-50 text-[10px]">Y</span> 0</div>
+              </div>
+            </div>
+            
+            <div className="border-t border-[#333] pt-4">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-xs font-bold text-white">Fill</span>
+                <span className="opacity-50 cursor-pointer hover:text-white">+</span>
+              </div>
+              <div className="flex items-center gap-3 text-xs font-mono">
+                <div className="w-4 h-4 rounded-sm bg-[#F5F5F5] border border-[#444]"></div>
+                <div className="flex-1">#F5F5F5</div>
+                <div className="opacity-50">100%</div>
+              </div>
+            </div>
+
+            <div className="border-t border-[#333] pt-4">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-xs font-bold text-white">Stroke</span>
+                <span className="opacity-50 cursor-pointer hover:text-white">+</span>
+              </div>
+            </div>
+
+            <div className="border-t border-[#333] pt-4">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-xs font-bold text-white">Effects</span>
+                <span className="opacity-50 cursor-pointer hover:text-white">+</span>
+              </div>
+            </div>
+            
+            <div className="border-t border-[#333] pt-4">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-xs font-bold text-white">Export</span>
+                <span className="opacity-50 cursor-pointer hover:text-white">+</span>
+              </div>
+              <button className="w-full py-2 mt-2 bg-[#FF4F12] text-white rounded font-sans font-semibold text-xs hover:bg-[#E5450F] transition-colors cursor-pointer flex items-center justify-center gap-2">
+                Export Frame 2 🚀
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Dock */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#2C2C2C] rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.3)] border border-[#444] p-1 flex gap-1 pointer-events-auto">
+          <button className="w-9 h-9 flex items-center justify-center bg-[#FF4F12] text-white rounded-lg text-lg cursor-pointer">
+            🖱️
+          </button>
+          <button className="w-9 h-9 flex items-center justify-center hover:bg-[#333] text-white rounded-lg transition-colors text-lg cursor-pointer opacity-80 hover:opacity-100 grayscale">
+            #️⃣
+          </button>
+          <button className="w-9 h-9 flex items-center justify-center hover:bg-[#333] text-white rounded-lg transition-colors text-lg cursor-pointer opacity-80 hover:opacity-100 grayscale">
+            ⏹️
+          </button>
+          <button className="w-9 h-9 flex items-center justify-center hover:bg-[#333] text-white rounded-lg transition-colors text-lg cursor-pointer opacity-80 hover:opacity-100 grayscale">
+            🖋️
+          </button>
+          <button className="w-9 h-9 flex items-center justify-center hover:bg-[#333] text-white rounded-lg transition-colors text-lg cursor-pointer opacity-80 hover:opacity-100 grayscale font-serif">
+            T
+          </button>
+          <div className="w-px h-5 bg-[#444] self-center mx-1"></div>
+          <button className="w-9 h-9 flex items-center justify-center hover:bg-[#333] text-white rounded-lg transition-colors text-lg cursor-pointer opacity-80 hover:opacity-100 grayscale">
+            💬
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -369,49 +400,64 @@ function PlaygroundItem({ item, onClick }) {
 
   return (
     <motion.div
-      whileHover={{ scale: 1.03, y: -8, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.15), 0 10px 15px -3px rgba(0,0,0,0.05)" }}
-      whileTap={{ scale: 0.98 }}
+      whileHover="hover"
       onClick={onClick}
-      className="absolute rounded-xl border border-[#EAE9E4] shadow-sm flex flex-col cursor-pointer transition-shadow"
+      className="absolute flex flex-col cursor-pointer group"
       style={{
         left: item.x,
         top: item.y,
         width: item.w,
         rotate: item.rotate,
-        backgroundColor: item.color || '#FFFFFF',
-        color: item.textColor || '#FF4F12'
       }}
     >
-      <div className="absolute inset-0 z-10" />
-      
-      {item.type === 'note' && (
-        <div className="p-6 font-mono text-sm leading-relaxed whitespace-pre-wrap">
-          {item.content}
-        </div>
-      )}
-      
-      {item.type === 'image' && (
-        <div className="p-3 pb-8">
-           <div className="w-full aspect-square overflow-hidden bg-gray-100 rounded-sm mb-3 border border-[#EAE9E4]">
-             <img src={item.src} alt={item.title} className="w-full h-full object-cover" draggable="false" />
-           </div>
-           <div className="text-center font-mono text-[10px] text-gray-500">{item.title}</div>
-        </div>
-      )}
-      
-      {item.type === 'widget' && (
-        <div className="p-5 flex flex-col justify-between h-full text-left">
-           <div className="mb-4">
-             <span className="font-mono text-[10px] text-[#FF4F12] bg-[#FFEBE1] px-2 py-0.5 rounded-full mb-2 inline-block border border-[#FFDBCE]">
-               {item.description}
-             </span>
-             <h3 className="font-serif text-lg text-[#333] leading-tight mt-1">{item.title}</h3>
-           </div>
-           <div className="pointer-events-none">
-             {item.component}
-           </div>
-        </div>
-      )}
+      {/* Figma Frame Title */}
+      {/* Figma Frame Title */}
+      <motion.div 
+        className="font-sans text-[10px] text-[#FF4F12] font-bold mb-1 tracking-wide whitespace-nowrap"
+      >
+        # {item.title}
+      </motion.div>
+
+      {/* Frame Body */}
+      <motion.div
+        className="relative bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)] outline outline-2 outline-[#FF4F12]"
+        style={{
+          borderRadius: item.type === 'widget' ? '8px' : '0px',
+          padding: item.type === 'widget' ? '20px' : '0px'
+        }}
+      >
+        <div className="absolute inset-0 z-10 pointer-events-none" />
+
+        {/* Figma corner nodes (Always Visible & Prominent) */}
+        <div className="absolute -top-[5px] -left-[5px] w-[10px] h-[10px] bg-white border-2 border-[#FF4F12] z-20 pointer-events-none shadow-sm" />
+        <div className="absolute -top-[5px] -right-[5px] w-[10px] h-[10px] bg-white border-2 border-[#FF4F12] z-20 pointer-events-none shadow-sm" />
+        <div className="absolute -bottom-[5px] -left-[5px] w-[10px] h-[10px] bg-white border-2 border-[#FF4F12] z-20 pointer-events-none shadow-sm" />
+        <div className="absolute -bottom-[5px] -right-[5px] w-[10px] h-[10px] bg-white border-2 border-[#FF4F12] z-20 pointer-events-none shadow-sm" />
+
+        {item.type === 'note' && (
+          <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap text-[#333]">
+            {item.content}
+          </div>
+        )}
+        
+        {item.type === 'image' && (
+           <img src={item.src} alt={item.title} className="w-full h-auto block" draggable="false" />
+        )}
+        
+        {item.type === 'widget' && (
+          <div className="flex flex-col justify-between h-full text-left">
+             <div className="mb-4">
+               <span className="font-mono text-[10px] text-[#FF4F12] bg-[#FFEBE1] px-2 py-0.5 rounded-full mb-2 inline-block border border-[#FFDBCE]">
+                 {item.description}
+               </span>
+               <h3 className="font-serif text-lg text-[#333] leading-tight mt-1">{item.title}</h3>
+             </div>
+             <div className="pointer-events-none">
+               {item.component}
+             </div>
+          </div>
+        )}
+      </motion.div>
     </motion.div>
   );
 }
@@ -451,8 +497,7 @@ function Modal({ item, onClose }) {
         
         {item.type === 'image' && (
            <div className="flex flex-col items-center">
-             <img src={item.src} className="max-h-[70vh] object-contain rounded-lg shadow-md mb-6 border border-[#EAE9E4]" alt={item.title} draggable="false" />
-             <h3 className="font-mono text-sm opacity-60">{item.title}</h3>
+             <img src={item.src} className="max-h-[80vh] object-contain rounded-lg shadow-md border border-[#EAE9E4]" alt={item.title} draggable="false" />
            </div>
         )}
         
