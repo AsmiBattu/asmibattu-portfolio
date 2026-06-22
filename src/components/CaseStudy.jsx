@@ -47,6 +47,9 @@ function CaseStudy({ caseStudyId, handleNavigate }) {
             alt={`${caseStudyId || 'Case Study'} Part ${index + 1}`}
             className="w-full h-auto block"
             style={{ imageRendering: 'high-quality' }}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding={index === 0 ? "sync" : "async"}
             onLoad={(e) => {
               e.target.style.display = 'block';
             }}

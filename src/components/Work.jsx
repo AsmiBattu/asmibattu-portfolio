@@ -98,8 +98,7 @@ function Work({ handleNavigate }) {
                 Unlockr - Get back in. Fast.
               </h3>
               <p className="font-sans text-sm md:text-base text-[#666666] leading-relaxed mb-6">
-                Designed the splash, package details, and cart experience
-                for a smoother user journey.
+                An upcoming product design project for finding verified locksmiths.
               </p>
             </div>
             <div className="flex justify-between items-center pt-4">
